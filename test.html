@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>19楼客户端Native-JS联调测试</title>
+	<script type="text/javascript">
+	    function connectWebViewJavascriptBridge(callback) {
+	        if (window.webOpenJSBridge) {
+	            callback(window.webOpenJSBridge)
+	        } else {
+				document.addEventListener('webOpenJSBridgeReady', function() {
+		                callback(window.webOpenJSBridge)
+		            }, false)
+	        }
+	    }
+
+	</script>
+</head>
+<body>
+    
+    <a href="https://fight1990.github.io/html-pages/test.html" class="aaaa">页内跳转</a></br>
+    <a href="javascript:;" class="aa" onclick="aa();">本页跳页方式A</a></br>
+    <a href="javascript:;" class="aaa" onclick="aaa();">本页跳页方式B</a></br>
+    <a href="https://www.163.com" class="aaa">本页跳页方式C</a></br>
+
+	<a href="javascript:;" class="a" onclick="a();">跳转到二级楼</a></br>
+	<a href="javascript:;" class="b" onclick="b();">跳转到举报</a></br>
+    <a href="javascript:;" class="c" onclick="c();">退出登录</a></br>
+    <a href="javascript:;" class="d" onclick="d();">调起注册页面</a></br>
+    <a href="javascript:;" class="e" onclick="e();">含刷新web页面--四个参数</a></br>
+    <a href="javascript:;" class="f" onclick="f();">不含刷新web页面--四个参数</a></br>
+    <a href="javascript:;" class="g" onclick="g();">传统调用web页面--两个参数</a></br>
+    <a href="javascript:;" class="h" onclick="h();">传统调用web页面--三个参数</a></br>
+    <a href="javascript:;" class="night" onclick="night();">夜间模式</a></br>
+    <a href="javascript:;" class="day" onclick="day();">日间模式</a></br>
+    <a href="javascript:;" class="hideTitleBar" onclick="hideTitleBar_A();">hideTitleBar()</a></br>
+    <a href="javascript:;" class="hideTitleBar" onclick="hideTitleBar_B();">hideTitleBar(true)</a></br>
+    <a href="javascript:;" class="hideTitleBar" onclick="hideTitleBar_C();">hideTitleBar(false)</a></br>
+    <a href="javascript:;" class="calendarEvent" onclick="calendarEvent();">日历事件</a></br>
+
+
+	<script type="text/javascript">
+        
+        function aa(){
+            window.location.href = "https://www.baidu.com";
+        }
+    
+        function aaa(){
+            window.location.hash = "http://www.ifeng.com/";
+        }
+    
+        function a(){
+            var data = {};
+            data.type = "second";
+            data.param= {"id":"home2"};
+
+            connectWebViewJavascriptBridge(function(bridge){
+                bridge.gotoLocalPage(JSON.stringify(data));
+            });
+        }
+        function b(){
+            var data = {};
+            data.type = "sendAdvice";
+            data.param= {};
+            
+            connectWebViewJavascriptBridge(function(bridge){
+                bridge.gotoLocalPage(JSON.stringify(data));
+            });
+        }
+        
+        function c(){
+            var data = {};
+            data.type = "logout";
+            data.param= {};
+            
+            connectWebViewJavascriptBridge(function(bridge){
+               bridge.gotoLocalPage(JSON.stringify(data));
+            });
+        }
+        
+        function d(){
+            var data = {};
+            data.type = "register";
+            data.param= {};
+            
+            connectWebViewJavascriptBridge(function(bridge){
+               bridge.gotoLocalPage(JSON.stringify(data));
+            });
+        }
+        
+        function e(){
+            var data = {};
+            data.param= {"isHasRefresh":true};
+            
+            connectWebViewJavascriptBridge(function(bridge){
+                                           bridge.createWebPage("百度搜索","https://www.baidu.com","",JSON.stringify(data));
+                                           });
+        }
+        
+        function f(){
+            var data = {};
+            data.param= {"isHasRefresh":false};
+            
+            connectWebViewJavascriptBridge(function(bridge){
+                                           bridge.createWebPage("百度搜索","https://www.baidu.com","",JSON.stringify(data));
+                                           });
+        }
+        
+        function g(){
+            connectWebViewJavascriptBridge(function(bridge){
+                                           bridge.createWebPage("百度搜索","https://www.baidu.com");
+                                           });
+        }
+        
+        function h(){
+            connectWebViewJavascriptBridge(function(bridge){
+                                           bridge.createWebPage("百度搜索","https://www.baidu.com","homeFlg");
+                                           });
+        }
+	
+	function night() {
+       	    connectWebViewJavascriptBridge(function(bridge){
+                                       bridge.isNightMode(true);
+                                       });
+    	}
+	function day() {
+       	    connectWebViewJavascriptBridge(function(bridge){
+                                       bridge.isNightMode(false);
+                                       });
+    	}
+		
+	function hideTitleBar_A() {
+	connectWebViewJavascriptBridge(function(bridge){
+                                       bridge.hideTitleBar();
+                                       });
+	}
+	function hideTitleBar_B() {
+	connectWebViewJavascriptBridge(function(bridge){
+                                       bridge.hideTitleBar(true);
+                                       });
+	}		
+	function hideTitleBar_C() {
+	connectWebViewJavascriptBridge(function(bridge){
+                                       bridge.hideTitleBar(false);
+                                       });
+	}
+		
+	function calendarEvent() {
+	var data = {};
+        data.title = "以梦为马-不负韶华";
+        data.location = "浙江省杭州市西湖区文三路90号东部软件园";
+	data.allDay = false;
+	data.startDate = "2017-11-01 08:00:00";
+	data.endDate = "2017-11-01 14:00:00";
+	data.alarms = [5,15];
+	data.notes = "乘风破浪会有时，直挂云帆济沧海！";
+	connectWebViewJavascriptBridge(function(bridge){
+                            		bridge.calendarEvent(JSON.stringify(data));
+                                       });
+	}
+	
+    
+// 	window.onload = function(){
+// 		night()
+// 	}
+	</script>
+</body>
+</html>
